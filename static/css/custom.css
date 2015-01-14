@@ -1,0 +1,33 @@
+pre {
+    background-color: #ffffff;
+    border: 0px;
+}
+
+body {
+    background-color: #ffffff;
+    height:1000px;
+}
+
+#hud {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.hp-bar, .mana-bar {
+    width:30%
+}
+
+#event-log {
+    width:300px;
+    height:100px;
+    left:100px;
+}
+
+#whosonline {
+    float:right;
+    height:100%;
+    width:200px;
+    z-index:999;
+    background: rgba(0,0,0,0.3);
+}
