@@ -1,6 +1,6 @@
 
 from random import randrange
-import json
+import simplejson as json
 import Util
 
 class Character():
@@ -35,4 +35,4 @@ class Character():
         shop.addCharacterInside(self)
 
     def to_JSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4 * ' ')

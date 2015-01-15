@@ -16,8 +16,30 @@ class ServerInstance():
         self.server_characters.append(character)
         return True
 
-    def list_server_cities(self):
+    def list_server_cities(self, json=False):
+
+        city_list = list()
+
         for city in self.server_cities:
-            print city.to_JSON()
+            if json:
+                city_list.append(city.to_JSON())
+            else:
+                city_list.append(city)
+
+        return city_list
+
+    def list_server_characters(self, json=False):
+
+        char_list = list()
+
+        for char in self.server_characters:
+            if json:
+                char_list.append(char.to_JSON())
+            else:
+                char_list.append(char)
+
+        return char_list
+
+
 
 

@@ -8,8 +8,8 @@ import time
 from flask import Flask, render_template, session, request, json
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room
 from flask.ext.mysql import MySQL
-from Characters import Human, Character
-from Shops import GeneralStore
+from Characters.Human import Human
+from Shops.GeneralStore import GeneralStore
 from ServerInstance import ServerInstance
 
 
@@ -22,9 +22,7 @@ thread = None
 
 
 si = ServerInstance()
-h1 = Genera
 si.list_server_cities()
-
 
 
 def background_thread():
@@ -48,9 +46,12 @@ def index():
 
 @socketio.on('connecting', namespace='')
 def connecting(data):
+    print 'Client connected: %s' % data
     char = Human('AAA1', 'linkzao')
-    session['character'] = Human('AAA1', 'linkzao')
-    print data
+    session['character'] = char
+    si.add_character(session['character'])
+    socketio.emit('test-json', session['character'].to_JSON())
+    #print data
 
 
 
