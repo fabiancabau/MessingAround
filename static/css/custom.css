@@ -59,3 +59,9 @@ body {
     margin-left:70px;
 }
 
+#backpack {
+    width: 108px;
+    margin-left: 70px;
+    float: left;
+}
+
