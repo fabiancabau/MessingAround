@@ -55,22 +55,57 @@
 <button class="btn btn-raised btn-primary btn-xs" id="btnEnterGeneralStore">Enter</button>
 </div>
 
-<div id="whosonline"></div>
+<div id="whosonline"><ul></ul></div>
 
 
 
 <div id="hud">
-    HP
-    <div class="progress hp-bar">
-        <div class="progress-bar progress-bar-success" style="width: 100%"></div>
-    </div>
-    MANA
-    <div class="progress mana-bar">
-        <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+    <div id="bars">
+        HP
+        <div class="progress hp-bar">
+            <div class="progress-bar progress-bar-success" style="width: 100%"></div>
+        </div>
+        MANA
+        <div class="progress mana-bar">
+            <div class="progress-bar progress-bar-info" style="width: 100%"></div>
+        </div>
+
+
+        <textarea id="event-log"></textarea>
     </div>
 
 
-    <textarea id="event-log">Event log</textarea>
+    <div id="inventory">
+        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/golden_helmet.gif' id="helmet-icon" class="icon-armor-piece"/></div>
+        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/firesword.gif' id="helmet-icon" class="icon-armor-piece"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/hero_armor.png' id="helmet-icon" class="icon-armor-piece"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/firesword.gif' id="helmet-icon" class="icon-armor-piece"/></div>
+
+        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-armor-piece"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-armor-piece"/></div>
+
+        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+        <div id="helmet" class="armor-piece"><img src='/static/sprites/crown_boots.png' id="helmet-icon" class="icon-armor-piece"/></div>
+        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+
+    </div>
+
+
+    <div id="stats">
+        <p class="attribute"><b>ATK:</b> <span id="atk">0</span></p>
+        <p class="attribute"><b>DEF:</b> <span id="atk">0</span></p>
+        <p class="attribute"><b>ATK_SPD:</b> <span id="atk">0</span></p>
+        <p class="attribute"><b>STAMINA:</b> <span id="atk">0</span></p>
+    </div>
+
+    <div id="backpack">
+
+    </div>
+
 </div>
 
 
@@ -86,6 +121,10 @@
             $.material.init();
             namespace = ''; // change to an empty string to use the global namespace
 
+            function addEventToLog(sender, msg) {
+                $('#event-log').append(sender +': ' + msg + '\n');
+            }
+
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -93,8 +132,22 @@
                 socket.emit('connecting', {data: 'I\'m connected!'});
             });
 
+            socket.on('ack-connected', function(data){
+                var char = JSON.parse(data.character);
+                var inventory = JSON.parse(data.inventory);
+
+                //console.log(inventory);
+                addEventToLog(char.nickname, 'connected');
+            });
+
             socket.on('test-json', function(data) {
-               console.log(data);
+                console.log(JSON.parse(data.character_list[1]));
+
+                for (var x = 0; x < data.character_list.length; x++) {
+                    var char = JSON.parse(data.character_list[x]);
+
+                    $('#whosonline ul').append('<li id="'+char.unique_id+'">'+char.nickname+'</li>');
+                }
             });
 
             // event handler for server sent data

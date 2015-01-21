@@ -1,6 +1,5 @@
 
 from random import randrange
-import json
 from Character import Character
 
 

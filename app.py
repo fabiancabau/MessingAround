@@ -11,6 +11,8 @@ from flask.ext.mysql import MySQL
 from Characters.Human import Human
 from Shops.GeneralStore import GeneralStore
 from ServerInstance import ServerInstance
+from Characters.Inventory import Inventory
+from Items.Swords import StarterSword
 
 
 app = Flask(__name__)
@@ -48,9 +50,15 @@ def index():
 def connecting(data):
     print 'Client connected: %s' % data
     char = Human('AAA1', 'linkzao')
+    char.equip_item(StarterSword())
+    #print char.inventory.get_backpack_items(json=True)
+
     session['character'] = char
+    session['inventory'] = char.inventory
     si.add_character(session['character'])
-    socketio.emit('test-json', session['character'].to_JSON())
+
+    socketio.emit('test-json', {'character_list': si.list_server_characters(json=True)})
+    socketio.emit('ack-connected', {'character': session['character'].to_JSON(), 'inventory': session['inventory'].to_JSON()})
     #print data
 
 

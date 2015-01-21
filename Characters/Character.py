@@ -1,7 +1,9 @@
 
 from random import randrange
-import simplejson as json
+import json
 import Util
+from Inventory import Inventory
+
 
 class Character():
 
@@ -16,6 +18,11 @@ class Character():
     turns_dead = 0
     speed = 0
     current_place_id = ''
+    inventory = None
+    atk = 0
+    dfn = 0
+    atk_speed = 0
+
 
     def __init__(self, unique_id, nickname, current_place_id):
         self.unique_id = Util._generate_unique_id()
@@ -29,10 +36,32 @@ class Character():
         self.turns_dead = 0
         self.speed = 0
         self.current_place_id = current_place_id
+        self.inventory = Inventory()
+        self.atk = 0
+        self.dfn = 0
+        self.atk_speed = 0
 
 
     def enter_shop(self, shop):
         shop.addCharacterInside(self)
 
+
+    def equip_item(self, item):
+        if self.inventory.primary_weapon is None:
+            print 'Equipando item'
+            print item.name
+            self.inventory.primary_weapon = item
+            item.onEquip(self)
+
+
+    def unequip_item(self, position):
+        if self.inventory.primary_weapon is not None:
+            print 'Desequipando item'
+            print self.inventory.primary_weapon.name
+            item_removed = self.inventory.primary_weapon
+            self.inventory.primary_weapon = None
+            item_removed.onUnequip(self)
+
+
     def to_JSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4 * ' ')
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
