@@ -11,6 +11,7 @@
 
 </head>
 <body>
+    <div id="game-content">
     <div id="house1" style="position:absolute;margin-left:0px;margin-top:50px;width:500px;height:1000px">
     <pre>                           (   )
                           (    )
@@ -32,7 +33,12 @@
                I II__I  I     XXXXXXX     I
             ~~~~~"   "~~~~~~~~~~~~~~~~~~~~~~~~
     </pre>
+            <button class="btn btn-raised btn-primary btn-xs" id="btnQuest">Enter quest</button>
+
     </div>
+
+
+
 
 
 <div id="house2" style="position:absolute;margin-left:600px;margin-top:50px;width:400px;height:1000px">
@@ -55,6 +61,8 @@
 <button class="btn btn-raised btn-primary btn-xs" id="btnEnterGeneralStore">Enter</button>
 </div>
 
+        </div>
+
 <div id="whosonline"><ul></ul></div>
 
 
@@ -76,6 +84,8 @@
 
 
     <div id="inventory">
+        INVENTORY<br><br>
+
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
         <div id="helmet" class="armor-piece"><img src='/static/sprites/golden_helmet.gif' id="helmet-icon" class="icon-armor-piece"/></div>
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
@@ -96,17 +106,19 @@
 
 
     <div id="stats">
+        STATS<br><br>
         <p class="attribute"><b>ATK:</b> <span id="atk">0</span></p>
-        <p class="attribute"><b>DEF:</b> <span id="atk">0</span></p>
-        <p class="attribute"><b>ATK_SPD:</b> <span id="atk">0</span></p>
-        <p class="attribute"><b>STAMINA:</b> <span id="atk">0</span></p>
+        <p class="attribute"><b>DEF:</b> <span id="dfn">0</span></p>
+        <p class="attribute"><b>ATK_SPD:</b> <span id="atk_spd">0</span></p>
+        <p class="attribute"><b>STAMINA:</b> <span id="sta">0</span></p>
     </div>
 
     <div id="backpack">
+        <img src="/static/sprites/backpack.gif"/><br>
+        <div id="empty" class="armor-piece"><img src='/static/sprites/coat.png' id="helmet-icon" class="icon-empty"/></div>
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
-        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
-        <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
+        <div id="empty" class="armor-piece"><img src='/static/sprites/black_armor.png' id="helmet-icon" class="icon-empty"/></div>
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
     </div>
@@ -130,6 +142,11 @@
                 $('#event-log').append(sender +': ' + msg + '\n');
             }
 
+
+            $('#btnQuest').click(function(){
+                socket.emit('goto-quest-client');
+            });
+
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
@@ -143,6 +160,12 @@
 
                 //console.log(inventory);
                 addEventToLog(char.nickname, 'connected');
+            });
+
+            socket.on('goto-quest', function(data){
+               var quest = JSON.parse(data.quest);
+
+                $('#game-content').load('/static/maps/' + quest.path + '/');
             });
 
             socket.on('test-json', function(data) {

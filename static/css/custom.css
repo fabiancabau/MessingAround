@@ -9,6 +9,7 @@ body {
 }
 
 #hud {
+    margin-left:30px;
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -49,7 +50,7 @@ body {
 
 #inventory {
     width: 108px;
-    margin-left:100px;
+    margin-left:70px;
     float:left;
 }
 

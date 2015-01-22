@@ -1,6 +1,8 @@
 from random import randrange
 import json
 import Util
+from Items.BaseItem import BaseItem
+
 
 class Inventory():
 
@@ -31,10 +33,11 @@ class Inventory():
         item_list =  list()
 
         for item in self.backpack:
-            if json:
-                item_list.append(item.to_JSON)
-            else:
-                item_list.append(item)
+            if isinstance(item, BaseItem):
+                if json:
+                    item_list.append(item.to_JSON())
+                else:
+                    item_list.append(item)
 
         return item_list
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from Shops.GeneralStore import GeneralStore
 from Characters.Human import Human
 from Cities.NewbieWorld import NewbieWorld
@@ -5,11 +6,14 @@ from Cities.NewbieWorld import NewbieWorld
 
 class ServerInstance():
 
+
+    date_started = 0
     server_cities = list()
     server_characters = list()
 
     def __init__(self):
         self.server_cities = list([NewbieWorld(), NewbieWorld(), NewbieWorld()])
+        self.date_started = datetime.utcnow()
 
     
     def add_character(self, character):
