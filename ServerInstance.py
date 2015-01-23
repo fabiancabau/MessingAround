@@ -6,14 +6,15 @@ from Cities.NewbieWorld import NewbieWorld
 
 class ServerInstance():
 
-
     date_started = 0
     server_cities = list()
     server_characters = list()
+    quests_started = list()
 
     def __init__(self):
         self.server_cities = list([NewbieWorld(), NewbieWorld(), NewbieWorld()])
         self.date_started = datetime.utcnow()
+        self.quests_started = list()
 
     
     def add_character(self, character):

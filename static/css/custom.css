@@ -66,3 +66,16 @@ body {
     float: left;
 }
 
+.enemy {
+    width: 200px;
+    height: 150px;
+    border: 1px solid black;
+    float:left;
+    padding:10px;
+    margin:10px;
+}
+
+.monster {
+    float:left;
+}
+

@@ -1,4 +1,5 @@
 import json
+from Enemies.Enemies import Rat
 
 class QuestMap():
 
@@ -8,10 +9,11 @@ class QuestMap():
     enemies = list()
 
 
-    def __init__(self, unique_id, name, path):
+    def __init__(self, unique_id, name, path, enemies):
         self.unique_id = unique_id
         self.name = name
         self.path = path
+        self.enemies = enemies
 
 
     def to_JSON(self):

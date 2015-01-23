@@ -1,6 +1,6 @@
 from random import randrange
 import json
-import Util
+import Utilities
 from Items.BaseItem import BaseItem
 
 

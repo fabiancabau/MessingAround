@@ -123,6 +123,10 @@
         <div id="empty" class="armor-piece"><img src='/static/sprites/empty.png' id="helmet-icon" class="icon-empty"/></div>
     </div>
 
+    <div id="commands">
+        <button class="btn btn-raised btn-primary btn-xs" id="btnAttack">Attack</button>
+    </div>
+
 </div>
 
 
@@ -135,6 +139,17 @@
 
      <script>
         $(document).ready(function() {
+            var quest = '';
+
+            Storage.prototype.setObject = function(key, value) {
+                this.setItem(key, JSON.stringify(value));
+            };
+
+            Storage.prototype.getObject = function(key) {
+                var value = this.getItem(key);
+                return value && JSON.parse(value);
+            };
+
             $.material.init();
             namespace = ''; // change to an empty string to use the global namespace
 
@@ -144,7 +159,7 @@
 
 
             $('#btnQuest').click(function(){
-                socket.emit('goto-quest-client');
+                socket.emit('goto-quest-client', {'unique_id': 'DenOfEvil'});
             });
 
             // the socket.io documentation recommends sending an explicit package upon connection
@@ -163,9 +178,16 @@
             });
 
             socket.on('goto-quest', function(data){
-               var quest = JSON.parse(data.quest);
+                quest = JSON.parse(data.quest);
+                localStorage.setObject('quest', quest);
 
                 $('#game-content').load('/static/maps/' + quest.path + '/');
+
+                if (quest.enemies.length > 0) {
+                    for (var x = 0; x < quest.enemies.length; x++) {
+                        console.log(quest.enemies[x]);
+                    }
+                }
             });
 
             socket.on('test-json', function(data) {

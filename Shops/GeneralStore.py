@@ -1,5 +1,5 @@
 from BaseShop import BaseShop
-import Util
+import Utilities
 
 class GeneralStore(BaseShop):
 

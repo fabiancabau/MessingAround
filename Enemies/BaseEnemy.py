@@ -1,4 +1,5 @@
 import json
+from random import randrange
 
 class BaseEnemy():
 
@@ -22,3 +23,33 @@ class BaseEnemy():
         self.dfn = dfn
         self.atk_spd = atk_spd
         self.drop_list = drop_list
+
+
+    def attack(self, characters):
+
+        rand = 0
+        damage = randrange(0, self.atk)
+
+        if isinstance(characters, list):
+            rand = randrange(0, len(characters))
+            characters[rand].receive_damage(damage)
+
+        else:
+            characters.receive_damage(damage)
+
+
+    def receive_damage(self, damage):
+
+        final_dmg = damage - self.dfn
+        self.hp -= final_dmg
+
+        if self.hp > 0:
+            return True
+        else:
+            return False
+
+
+    def to_JSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+

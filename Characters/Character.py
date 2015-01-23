@@ -1,7 +1,7 @@
 
 from random import randrange
 import json
-import Util
+import Utilities
 from Inventory import Inventory
 
 
@@ -25,7 +25,7 @@ class Character():
 
 
     def __init__(self, unique_id, nickname, current_place_id):
-        self.unique_id = Util._generate_unique_id()
+        self.unique_id = Utilities._generate_unique_id()
         self.nickname = nickname
         self.hp = 100
         self.money = 0
@@ -61,6 +61,17 @@ class Character():
             item_removed = self.inventory.primary_weapon
             self.inventory.primary_weapon = None
             item_removed.onUnequip(self)
+
+
+    def receive_damage(self, damage):
+
+        final_dmg = damage - self.dfn
+        self.hp -= final_dmg
+
+        if self.hp > 0:
+            return True
+        else:
+            return False
 
 
     def to_JSON(self):

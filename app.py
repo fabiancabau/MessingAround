@@ -14,6 +14,7 @@ from ServerInstance import ServerInstance
 from Characters.Inventory import Inventory
 from Items.Swords import StarterSword
 from Quests.TutorialQuest import TutorialQuest
+import Utilities
 
 
 app = Flask(__name__)
@@ -70,9 +71,10 @@ def connecting(data):
 
 
 @socketio.on('goto-quest-client', namespace='')
-def goto_quest_client():
-    quest = TutorialQuest()
+def goto_quest_client(data):
+    quest = Utilities._get_quest_by_id(data.get('unique_id'))
     current_map = quest.get_current_map().to_JSON()
+    print current_map
     socketio.emit('goto-quest', {'quest': current_map})
 
 

@@ -1,7 +1,7 @@
 import json
 from BaseQuest import BaseQuest
 from QuestMap import QuestMap
-
+from Enemies.Enemies import Rat
 
 class DenOfEvil(QuestMap):
 
@@ -19,9 +19,14 @@ class TutorialQuest(BaseQuest):
     def __init__(self):
         BaseQuest.__init__(self, 'q1', 'TutorialQuest')
         self.current_map = 0
+
+        enemies = list()
+        enemies.append(Rat())
+
         self.maps = {
-            '0': QuestMap('DenOfEvil', 'Den Of Evil', 'den_of_evil.html')
+            '0': QuestMap('DenOfEvil', 'Den Of Evil', 'den_of_evil.html', enemies)
         }
+
 
 
     def get_current_map(self):

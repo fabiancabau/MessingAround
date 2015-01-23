@@ -1,13 +1,13 @@
 from Characters.Character import Character
 import json
-import Util
+import Utilities
 
 class BasePlace:
     unique_place_id = ''
     characters_inside = list()
 
     def __init__(self):
-        self.unique_place_id = Util._generate_unique_id
+        self.unique_place_id = Utilities._generate_unique_id
 
     def addCharacterInside(self, character):
         if isinstance(character, Character):
